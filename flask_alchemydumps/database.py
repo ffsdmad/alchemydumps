@@ -28,11 +28,9 @@ class AlchemyDumpsDatabase:
     def get_data(self):
         """Go through every mapped class and dumps the data"""
         db = self.db()
-        data = dict()
         for model in self.get_mapped_classes():
             query = db.session.query(model)
-            data[model.__name__] = dumps(query.all())
-        return data
+            yield model.__name__, dumps(query.all()), query.count()
 
     def parse_data(self, contents):
         """Loads a dump and convert it into rows"""

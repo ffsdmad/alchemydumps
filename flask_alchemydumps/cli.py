@@ -30,10 +30,9 @@ def create():
     alchemy = AlchemyDumpsDatabase()
     data = alchemy.get_data()
     backup = Backup()
-    for class_name in data.keys():
+    for class_name, items, rows in data:
         name = backup.get_name(class_name)
-        full_path = backup.target.create_file(name, data[class_name])
-        rows = len(alchemy.parse_data(data[class_name]))
+        full_path = backup.target.create_file(name, items)
         if full_path:
             success(f"==> {rows} rows from {class_name} saved as {full_path}")
         else:
